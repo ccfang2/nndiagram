@@ -23,7 +23,7 @@ nndiagram(input=3, hidden=c(4,4,4))
 ```
 The output is given as follows.
 
-```r
+```latex
 % To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting 
 % and also define the length of \layersep which is used in the LaTeX code.
 % But, you are free to change the length as per your own preference. 
@@ -87,7 +87,9 @@ cat(paste(nnd,"\n"))
 ```
 
 ## Note
-This package is a ongoing project, and more functions will be added in the future, such as those to produce pdf version of diagrams, combine existing diagrams or convert handdrawing neural network diagrams to computerized ones. Collaborations are sincerely welcome. Comments and suggestions are always highly appreciated.
+- This package is a ongoing project, and more functions will be added in the future, such as those to produce pdf version of diagrams, combine existing diagrams or convert handdrawing neural network diagrams to computerized ones. 
+- Collaborations are sincerely welcome. Comments and suggestions are always highly appreciated.
+- This package will be available on [CRAN](https://cran.r-project.org) soon.
 
 ## Contact
 
