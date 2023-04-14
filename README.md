@@ -276,7 +276,7 @@ The output and resulting diagram are as follows.
       
 * Neural Network Diagrams with Some Neurons being Covered up
 
-In neural network analysis, users may hope to deemphasize some neurons and draw them with lighter color. In package `nndiagram`, they can do that simply by using command `nndiagram_nodeCoverup`. Users are expected to define the argument `node.coverup` properly. For example, in a neural network with 3 neurons oon input layer, and 4 neurons on each of the three hidden layers, if a user hopes to deemphasize the first neuron on both the first and second hidden layer, then he needs to define `node.coverup=c(4,8)`. The rule of neuron indexing is the same as that in command `nndiagram`.
+In neural network analysis, users may hope to deemphasize some neurons and draw them with lighter color. In package `nndiagram`, they can do that simply by using command `nndiagram_nodeCoverup`. Users are expected to define the argument `node.coverup` properly. For example, in a neural network with 3 neurons on input layer, and 4 neurons on each of the three hidden layers, if a user hopes to deemphasize the first neuron on both the first and second hidden layer, then he needs to define `node.coverup=c(4,8)`. The rule of neuron indexing is the same as that in command `nndiagram`.
 
 ```r
 nndiagram_nodeCoverup(input=3, hidden=c(4,4,4), node.coverup = c(4,8))   
