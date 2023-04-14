@@ -191,7 +191,7 @@ There are three new functions in this version as contrast to the previous versio
 
 * Neural Network Diagrams with Over-sized Layers
       
-In some large scale neural networks, users may hope to draw the diagram in a more concise way with some neurons left out and use suspension points instead. `nndiagram_oversize` suffices their demand. Users only need to define the cutoff number of neurons. For example, in a neural network with 3 neurons oon input layer, and 6, 4, 6 neurons on three hidden layers respectively, if a user define 5 is the cutoff value, then the first and thrid hidden layers are considered to be oversized and will be drawn in a more concise fashion. Following is an example.
+In some large scale neural networks, users may hope to draw the diagram in a more concise way with some neurons left out and use suspension points instead. `nndiagram_oversize` suffices their demand. Users only need to define the cutoff number of neurons. For example, in a neural network with 3 neurons on input layer, and 6, 4, 6 neurons on three hidden layers respectively, if a user define 5 is the cutoff value, then the first and third hidden layers are considered to be oversized and will be drawn in a more concise fashion. Following is an example.
       
 ```r
 nndiagram_oversize(input=3, hidden=c(6,4,6), size.cutoff=5)
