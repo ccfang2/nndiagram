@@ -12,6 +12,7 @@ nndiagram(
   title = NULL,
   color = "black",
   alpha = 1,
+  layer.sep = 2.5,
   layer.label = NULL,
   input.label = NULL,
   output.label = NULL
@@ -35,6 +36,8 @@ and 'omit' simultaneously. Default is \code{NULL}.}
 
 \item{alpha}{an optional numeric value between 0 and 1 that specifies the opacity of lines. \code{1} indicates lines to be opaque, and \code{0} indicates lines to be transparent. Default is \code{1}.}
 
+\item{layer.sep}{an optional positive numeric value that specifies the distance between layers of a neural network. Default is \code{2.5}.}
+
 \item{layer.label}{an optional character vector that specifies label for each layer, including input, hidden and output layers.}
 
 \item{input.label}{an optional character vector that specifies label for each input neuron.}
@@ -42,7 +45,8 @@ and 'omit' simultaneously. Default is \code{NULL}.}
 \item{output.label}{an optional character that specifies label for output neuron.}
 }
 \value{
-A character value, i.e., a LaTeX code that can be directly copied and pasted to produce neural network diagram in any LaTeX editor.
+\code{nndiagram} uses \code{cat()} to produce LaTeX code for neural network diagram. Also, \code{nndiagram} saves the same output as a character vector invisibly, so users could use \code{cat()} to print it out later, as shown in Examples.
+The \code{nndiagram} LaTeX output can be directly copied and pasted to produce neural network diagram in any LaTeX editor.
 }
 \description{
 The \code{nndiagram} command is used to produce LaTeX code for drawing well-formatted neural network diagrams. To make the code work in a LaTeX editor, users need
@@ -51,13 +55,12 @@ to install and import two TeX packages, i.e., \href{https://www.overleaf.com/lea
 in the setting of TeX file. Syntax of importing these packages is included in the output of function.
 }
 \note{
-This package is a ongoing project, and more functions will be added in the future, such as those to produce pdf version of diagrams, combine existing diagrams or convert handdrawing neural network diagrams
-to computerized ones. Collaborations are sincerely welcome. Comments and suggestions are always highly appreciated.
+This package is an ongoing project, and more functions will be added in the future, such as those to produce pdf version of diagrams or convert handdrawing neural network diagrams to computerized ones. Collaborations
+are sincerely welcome. Comments and suggestions are always highly appreciated.
 }
 \examples{
-# A neural network diagram with 3 neurons on input layer, 4 neurons
-# on each of 3 hidden layers, and 1 neuron on output layer.
-# No connection is omitted and all other arguments are default.
+# A neural network with 3 neurons on input layer, 4 neurons on each of 3 hidden layers,
+# and 1 neuron on output layer. No connection is omitted and all other arguments are default.
 nndiagram(input=3, hidden=c(4,4,4))
 
 # Same as the first example but connections from neuron 1 to 4 and from neuron 5 to 8 are omitted.
@@ -69,7 +72,7 @@ nndiagram(input=3, hidden=c(4,4,4), omit=c("->4"))
 # Same as the first example but connections with neuron 5 as source are omitted.
 nndiagram(input=3, hidden=c(4,4,4), omit=c("5->"))
 
-# Save the output and use the saved output to produce LaTeX code
+# Save the output and use the saved output to produce LaTeX code.
 nnd <- nndiagram(input=3, hidden=c(4,4,4))
 cat(paste(nnd,"\n"))
 }
