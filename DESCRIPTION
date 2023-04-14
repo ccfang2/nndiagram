@@ -1,5 +1,5 @@
 Package: nndiagram
-Title: Generator of neural network diagrams
+Title: Generator of Neural Network Diagrams
 Version: 1.0.0
 Authors@R: 
     person("Chencheng", "Fang", , "ccfang@uni-bonn.de", role = c("aut", "cre"))
