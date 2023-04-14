@@ -3,6 +3,7 @@
 #' to install and import two TeX packages, i.e., \href{https://www.overleaf.com/learn/latex/TikZ_package}{TikZ} and
 #' \href{https://www.ctan.org/pkg/ifthen#:~:text=Ifthen%20is%20a%20separate%20package%20within%20the%20LaT.,always%20needed%20to%20load%20it.%20Sources.%20%2Fmacros%2Flatex%2Fbase.%20Documentation.}{ifthen}
 #' in the setting of TeX file. Syntax of importing these packages is included in the output of function.
+#'
 #' @param input a positive integer that specifies the number of input neurons.
 #' @param hidden a positive integer vector that specifies the number of neurons on each hidden layer. For example, c(4,4,4) specifies that there are 3 hidden layers and 4 neurons on each hidden layer.
 #' Non-positive and non-integer numbers are not allowed.
@@ -13,22 +14,23 @@
 #' @param title an optional character that specifies the main title of diagram. Default is \code{NULL}.
 #' @param color an optional character that specifies the color of lines. Default is \code{"black"}.
 #' @param alpha an optional numeric value between 0 and 1 that specifies the opacity of lines. \code{1} indicates lines to be opaque, and \code{0} indicates lines to be transparent. Default is \code{1}.
+#' @param layer.sep an optional positive numeric value that specifies the distance between layers of a neural network. Default is \code{2.5}.
 #' @param layer.label an optional character vector that specifies label for each layer, including input, hidden and output layers.
 #' @param input.label an optional character vector that specifies label for each input neuron.
 #' @param output.label an optional character that specifies label for output neuron.
 #'
-#' @return A character value, i.e., a LaTeX code that can be directly copied and pasted to produce neural network diagram in any LaTeX editor.
+#' @return \code{nndiagram} uses \code{cat()} to produce LaTeX code for neural network diagram. Also, \code{nndiagram} saves the same output as a character vector invisibly, so users could use \code{cat()} to print it out later, as shown in Examples.
+#' The \code{nndiagram} LaTeX output can be directly copied and pasted to produce neural network diagram in any LaTeX editor.
 #' @export
 #'
-#' @note This package is a ongoing project, and more functions will be added in the future, such as those to produce pdf version of diagrams, combine existing diagrams or convert handdrawing neural network diagrams
-#' to computerized ones. Collaborations are sincerely welcome. Comments and suggestions are always highly appreciated.
+#' @note This package is an ongoing project, and more functions will be added in the future, such as those to produce pdf version of diagrams or convert handdrawing neural network diagrams to computerized ones. Collaborations
+#' are sincerely welcome. Comments and suggestions are always highly appreciated.
 #'
 #' @author Chencheng Fang, Bonn Graduate School of Economics, University of Bonn. Email: \email{ccfang@uni-bonn.de}
 #'
 #' @examples
-#' # A neural network diagram with 3 neurons on input layer, 4 neurons
-#' # on each of 3 hidden layers, and 1 neuron on output layer.
-#' # No connection is omitted and all other arguments are default.
+#' # A neural network with 3 neurons on input layer, 4 neurons on each of 3 hidden layers,
+#' # and 1 neuron on output layer. No connection is omitted and all other arguments are default.
 #' nndiagram(input=3, hidden=c(4,4,4))
 #'
 #' # Same as the first example but connections from neuron 1 to 4 and from neuron 5 to 8 are omitted.
@@ -40,18 +42,31 @@
 #' # Same as the first example but connections with neuron 5 as source are omitted.
 #' nndiagram(input=3, hidden=c(4,4,4), omit=c("5->"))
 #'
-#' # Save the output and use the saved output to produce LaTeX code
+#' # Save the output and use the saved output to produce LaTeX code.
 #' nnd <- nndiagram(input=3, hidden=c(4,4,4))
 #' cat(paste(nnd,"\n"))
-nndiagram <- function(input, hidden, keep=NULL, omit=NULL, title=NULL,
-                      color="black", alpha=1, layer.label=NULL, input.label=NULL, output.label=NULL) {
+nndiagram <- function(input, hidden, keep=NULL, omit=NULL, title=NULL,color="black", alpha=1,
+                      layer.sep=2.5, layer.label=NULL, input.label=NULL, output.label=NULL) {
 
   #---------------------------------------
   # Checking arguments and data preparation
   #---------------------------------------
 
+  # checking if input is a positive single integer
+  if (!is.numeric(input) | input <=0 | (input != floor(input))) stop("input should be a positive integer")
+  if (length(input)>1) stop("input should be a single number")
+
+  # checking if elements in hidden are positive integers
+  if (!is.numeric(hidden) | any(hidden <= 0)) stop("Elements in hidden should be positive numbers")
+  if (any(hidden != floor(hidden))) stop("Elements in hidden should be integers")
+
   # checking if alpha is between 0 and 1
-  if (alpha<0 | alpha>1) stop("Alpha should be between 0 and 1")
+  if (alpha<0 | alpha>1 | !is.numeric(alpha)) stop("alpha should be a number between 0 and 1")
+  if (length(alpha)>1) stop("alpha should be a single number")
+
+  # checking if layer.sep is a positive single number
+  if (layer.sep<=0 | !is.numeric(layer.sep)) stop("layer.sep should be a positive number")
+  if (length(layer.sep)>1) stop("layer.sep should be a single number")
 
   # checking if layer.label is defined correctly
   if (is.null(layer.label))
@@ -61,11 +76,8 @@ nndiagram <- function(input, hidden, keep=NULL, omit=NULL, title=NULL,
     }
 
   # checking if input.label is defined correctly
-  if (is.null(input.label))
-    input.label <- paste0("Input ",1:input) else {
-      if (!is.null(input.label) & length(input.label)!= input)
-        stop("Number of input labels don't coincide with number of input")
-    }
+  if (!is.null(input.label) & length(input.label)!= input)
+    stop("Number of input labels don't coincide with number of input")
 
   # checking if output label is defined correctly
   if (is.null(output.label))
@@ -203,6 +215,13 @@ nndiagram <- function(input, hidden, keep=NULL, omit=NULL, title=NULL,
   # producing latex syntax
   #---------------------------------------
 
+  # setting syntax
+  setting <- c("\\usepackage{tikz} \n",
+               "\\usepackage{ifthen} \n",
+               "\\def\\layersep{",layer.sep, "cm} \n",
+               "\\newcommand*\\circled[1]{\\tikz[baseline=(char.base)]{ \n",
+               "\40 \\node[shape=rectangle,inner sep=3pt, draw=",color,"!",alpha*100,", fill= ",color,"!",alpha*25,"] (char) {#1};}} \n \n")
+
   # head syntax
   head <- c("\\begin{figure}[!ht] \n", "\\centering \n",
             "\\begin{tikzpicture}[shorten >=1pt,->,draw=",color,"!",alpha*100,", node distance=\\layersep, scale=1] \n",
@@ -211,7 +230,7 @@ nndiagram <- function(input, hidden, keep=NULL, omit=NULL, title=NULL,
             "\40 \\tikzstyle{input neuron}=[neuron]; \n",
             "\40 \\tikzstyle{output neuron}=[neuron]; \n",
             "\40 \\tikzstyle{hidden neuron}=[neuron]; \n",
-            "\40 \\tikzstyle{annot} = [text width=4em, text centered] \n")
+            "\40 \\tikzstyle{annot} = [text width=4em, text centered, text=",color,"!",alpha*100,"] \n \n")
 
   # producing syntax for drawing neurons
   max.layer <- which.max(c(input,hidden))
@@ -221,11 +240,11 @@ nndiagram <- function(input, hidden, keep=NULL, omit=NULL, title=NULL,
     ## drawing neurons on input layer
     if (is.null(input.label)) {
     input_layer <- c("\40 \\foreach \\name / \\y in {1,...,",input,"} \n",
-                     "\40 \40 \40 \\node [input neuron, pin=left:Input \\y] (I-\\name) at (0,-\\y) {};") } else {
+                     "\40 \40 \40 \\node [input neuron, pin=left:\\textcolor{",color,"!",alpha*100,"}{Input \\y}] (I-\\name) at (0,-\\y) {};") } else {
                        input_layer <- ""
                        nextline <- c(rep("\n",length(input.label)-1),"")
                        for (i in 1:length(input.label))
-                         input_layer <- c(input_layer, "\40 \\node [input neuron, pin=left:", input.label[i],"] (I-",i,") at (0,-",i,") {};", nextline[i])
+                         input_layer <- c(input_layer, "\40 \\node [input neuron, pin=left:\\textcolor{",color,"!",alpha*100,"}{",input.label[i],"}] (I-",i,") at (0,-",i,") {};", nextline[i])
                      }
     ## drawing neurons on hidden layers
     hidden_layers <- ""
@@ -241,20 +260,19 @@ nndiagram <- function(input, hidden, keep=NULL, omit=NULL, title=NULL,
     }
     hidden_layers <- c(hidden_layers,"\n")
     ## drawing neuron on output layer
-    output_layer <- c("\40 \\node[output neuron,pin={[pin edge={->}]right:",output.label,"}, right of=H-",
+    output_layer <- c("\40 \\node[output neuron,pin={[pin edge={->}]right:\\textcolor{",color,"!",alpha*100,"}{", output.label,"}}, right of=H-",
                       floor((sum(hidden[-length(hidden)])+1+sum(hidden))/2),", yshift=",
                       floor((sum(hidden[-length(hidden)])+1+sum(hidden))/2)-(sum(hidden[-length(hidden)])+1+sum(hidden))/2,"cm] (O) {}; \n")
-  }
-  else {
+  } else {
     ## when input layer is not one of layers which have the most neurons
     ## drawing neurons on input layer
     if (is.null(input.label)) {
       input_layer <- c("\40 \\foreach \\name / \\y in {1,...,",input,"} \n",
-                       "\40 \40 \40 \\node [input neuron, pin=left:Input \\y] (I-\\name) at (0,",(input-max(c(input, hidden)))/2,"-\\y) {};") } else {
+                       "\40 \40 \40 \\node [input neuron, pin=left:\\textcolor{",color,"!",alpha*100,"}{Input \\y}] (I-\\name) at (0,",(input-max(c(input, hidden)))/2,"-\\y) {};") } else {
                          input_layer <- ""
                          nextline <- c(rep("\n",length(input.label)-1),"")
                          for (i in 1:length(input.label))
-                           input_layer <- c(input_layer, "\40 \\node [input neuron, pin=left:", input.label[i],"] (I-",i,") at (0,",(input-max(c(input, hidden)))/2-i,") {};",nextline[i])
+                           input_layer <- c(input_layer, "\40 \\node [input neuron, pin=left:\\textcolor{",color,"!",alpha*100,"}{", input.label[i],"}] (I-",i,") at (0,",(input-max(c(input, hidden)))/2-i,") {};",nextline[i])
                        }
     ## drawing neurons on hidden layers
     hidden_layers <- ""
@@ -270,7 +288,7 @@ nndiagram <- function(input, hidden, keep=NULL, omit=NULL, title=NULL,
     }
     hidden_layers <- c(hidden_layers,"\n")
     ## drawing neuron on output layer
-    output_layer <- c("\40 \\node[output neuron,pin={[pin edge={->}]right:",output.label,"}, right of=H-",
+    output_layer <- c("\40 \\node[output neuron,pin={[pin edge={->}]right:\\textcolor{",color,"!",alpha*100,"}{",output.label,"}}, right of=H-",
                       floor((sum(hidden[-length(hidden)])+1+sum(hidden))/2),", yshift=",
                       floor((sum(hidden[-length(hidden)])+1+sum(hidden))/2)-(sum(hidden[-length(hidden)])+1+sum(hidden))/2,"cm] (O) {}; \n")
   }
@@ -320,8 +338,7 @@ nndiagram <- function(input, hidden, keep=NULL, omit=NULL, title=NULL,
   j <- 1
   m <- hidden[1]
   for (i in 1:(length(hidden)-1)) {
-    if (nrow(omit_mat)==0) {omit_hidden <- omit_mat}
-    else {omit_hidden<- omit_mat[omit_mat[,1]>=j+input & omit_mat[,1]<=m+input,,drop=FALSE]}
+    if (nrow(omit_mat)==0) {omit_hidden <- omit_mat} else {omit_hidden<- omit_mat[omit_mat[,1]>=j+input & omit_mat[,1]<=m+input,,drop=FALSE]}
     omit_connections_hidden <- omitted_hidden(omit_hidden)
     connections_hidden <- c("\40 \\foreach \\source in {",j,",...,",m,"} \n",
         "\40 \40 \40 \\foreach \\dest in {",j+hidden[i],",...,",m+hidden[i+1],"}")
@@ -330,8 +347,7 @@ nndiagram <- function(input, hidden, keep=NULL, omit=NULL, title=NULL,
     final_connections_hidden <- c(final_connections_hidden,connections_hidden,omit_connections_hidden)
   }
   ## connections with neurons on the last hidden layer as sources
-  if (nrow(omit_mat)==0) {omit_output <- omit_mat}
-  else {omit_output<- omit_mat[omit_mat[,1]>=sum(c(input,hidden[-length(hidden)]))+1 & omit_mat[,1]<=sum(c(input,hidden)),,drop=FALSE]}
+  if (nrow(omit_mat)==0) {omit_output <- omit_mat} else {omit_output<- omit_mat[omit_mat[,1]>=sum(c(input,hidden[-length(hidden)]))+1 & omit_mat[,1]<=sum(c(input,hidden)),,drop=FALSE]}
   omit_connections_output <- omitted_output(omit=omit_output)
   connections_output <- c("\40 \\foreach \\source in {",sum(hidden[-length(hidden)])+1,",...,",sum(hidden),"}")
   final_connections_output <- c(connections_output, omit_connections_output)
@@ -340,31 +356,36 @@ nndiagram <- function(input, hidden, keep=NULL, omit=NULL, title=NULL,
   if (max.layer == 1) {
     ## when input layer is one of the layers which have the most neurons
     ## annotating neurons on input layer
-    annotation_input <- c("\40 \\node[annot,above of=I-1, node distance=1cm] {",layer.label[1],"}; \n")
+    annotation_input <- c("\40 \\node[annot,above of=I-1, node distance=2cm] {",layer.label[1],"}; \n",
+                          "\40 \\node[annot,above of=I-1, node distance=1cm] {$\\circled{",input,"}$}; \n")
     ## annotating neurons on hidden layers
     annotation_hidden <- ""
     h <- 0
     for (i in 1:length(hidden)) {
-      annotation_hidden <- c(annotation_hidden, "\40 \\node[annot,above of=H-",h+1,", node distance=",(input-hidden[i])/2+1,"cm] (hl",i,") {",layer.label[i+1],"}; \n")
+      annotation_hidden <- c(annotation_hidden, "\40 \\node[annot,above of=H-",h+1,", node distance=",(input-hidden[i])/2+2,"cm] (hl",i,") {",layer.label[i+1],"}; \n",
+                             "\40 \\node[annot,above of=H-",h+1,", node distance=",(input-hidden[i])/2+1,"cm] (hl",i,") {$\\circled{",hidden[i],"}$}; \n")
       h <- h+hidden[i]
     }
     ## annotating neurons on output layers
-    annotation_output <- c("\40 \\node[annot,above of =O, node distance=",(input-1)/2+1,"cm] {",layer.label[length(layer.label)],"};")
-    annotation <- c("\n",annotation_input, annotation_hidden, annotation_output)
-  }
-  else {
+    annotation_output <- c("\40 \\node[annot,above of =O, node distance=",(input-1)/2+2,"cm] {",layer.label[length(layer.label)],"}; \n",
+                           "\40 \\node[annot,above of =O, node distance=",(input-1)/2+1,"cm] {$\\circled{1}$}; \n")
+    annotation <- c(annotation_input, annotation_hidden, annotation_output)
+  } else {
     ## when input layer is not one of the layers which have the most neurons
     ## annotating neurons on input layer
-    annotation_input <- c("\40 \\node[annot,above of=I-1, node distance=",(max(c(input, hidden))-input)/2+1,"cm] {",layer.label[1],"}; \n")
+    annotation_input <- c("\40 \\node[annot,above of=I-1, node distance=",(max(c(input, hidden))-input)/2+2,"cm] {",layer.label[1],"}; \n",
+                          "\40 \\node[annot,above of=I-1, node distance=",(max(c(input, hidden))-input)/2+1,"cm] {$\\circled{",input,"}$}; \n")
     ## annotating neurons on hidden layers
     annotation_hidden <- ""
     h <- 0
     for (i in 1:length(hidden)) {
-      annotation_hidden <- c(annotation_hidden, "\40 \\node[annot,above of=H-",h+1,", node distance=",(max(c(input, hidden))-hidden[i])/2+1,"cm] (hl",i,") {",layer.label[i+1],"}; \n")
+      annotation_hidden <- c(annotation_hidden, "\40 \\node[annot,above of=H-",h+1,", node distance=",(max(c(input, hidden))-hidden[i])/2+2,"cm] (hl",i,") {",layer.label[i+1],"}; \n",
+                             "\40 \\node[annot,above of=H-",h+1,", node distance=",(max(c(input, hidden))-hidden[i])/2+1,"cm] (hl",i,") {$\\circled{",hidden[i],"}$}; \n")
       h <- h+hidden[i]
     }
     ## annotating neurons on output layers
-    annotation_output <- c("\40 \\node[annot,above of =O, node distance=",(max(c(input, hidden))-1)/2+1,"cm] {",layer.label[length(layer.label)],"};")
+    annotation_output <- c("\40 \\node[annot,above of =O, node distance=",(max(c(input, hidden))-1)/2+2,"cm] {",layer.label[length(layer.label)],"}; \n",
+                           "\40 \\node[annot,above of =O, node distance=",(max(c(input, hidden))-1)/2+1,"cm] {$\\circled{1}$}; \n")
     annotation <- c(annotation_input, annotation_hidden, annotation_output)
   }
 
@@ -375,19 +396,14 @@ nndiagram <- function(input, hidden, keep=NULL, omit=NULL, title=NULL,
             "\\end{figure} \n")
 
   # comment
-  comment <- c("% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting \n",
-               "% and also define the length of \\layersep which is used in the LaTeX code.\n",
-               "% But, you are free to change the length as per your own preference. \n",
-               "% Please include the following syntax in the heading of your TeX file. \n",
-               "% \\usepackage{tikz} \n",
-               "% \\usepackage{ifthen} \n",
-               "% \\def\\layersep{2.5cm} \n \n")
+  comment <- c("% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, as shown below. \n",
+               "% Also, users need to define the length of \\layersep which is used in the LaTeX code. \n \n")
 
-  cat(comment, head, input_layer, hidden_layers, output_layer,
-      final_connections_input, final_connections_hidden, final_connections_output,
-      annotation, tail, sep="")
+  cat(comment, setting, head, "\40 % drawing neurons \n", input_layer, hidden_layers, output_layer,
+      "\n \40 % drawing arrows \n", final_connections_input, final_connections_hidden, final_connections_output,
+      "\n \n \40 % annotations \n", annotation, tail, sep="")
 
-  syntax <- utils::capture.output(cat(comment, head, input_layer, hidden_layers, output_layer,
-      final_connections_input, final_connections_hidden, final_connections_output,
-      annotation, tail, sep=""))
+  syntax <- utils::capture.output(cat(comment, setting, head, "\40 % drawing neurons \n", input_layer, hidden_layers, output_layer,
+                                      "\n \40 % drawing arrows \n", final_connections_input, final_connections_hidden, final_connections_output,
+                                      "\n \n \40 % annotations \n", annotation, tail, sep=""))
 }
