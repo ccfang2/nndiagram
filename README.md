@@ -102,7 +102,7 @@ cat(paste(nnd,"\n"))
 
 If a user hopes to delete certain neuron connections or only keep certain connections, he or she could simply define the arguments `omit` or `keep` in `nndiagram`. For example, `omit="->4"` means that the connection from neuron 1 to 4 is omitted. In package `nndiagram`, neurons are counted from top to bottom and from left to right, as shown in figure below.
 
-![Rule of neuron indexing](man/figures/nn&#32;index.png)
+![Rule of neuron indexing](man/figures/index.png)
 
 So, the code to produce such a neural network with omitted connections is as follows.
 
@@ -180,7 +180,7 @@ The output and resulting diagram are as follows.
 \end{figure} 
 ```
 
-![Example 1](man/figures/nn&#32;omit.png)
+![Example 1](man/figures/omit.png)
 
 ## Latest release
 
@@ -189,7 +189,7 @@ The output and resulting diagram are as follows.
 
 There are three new functions in this version as contrast to the previous version
 
-> Neural Network Diagrams with Over-sized Layers
+* Neural Network Diagrams with Over-sized Layers
       
 In some large scale neural networks, users may hope to draw the diagram in a more concise way with some neurons left out and use suspension points instead. `nndiagram_oversize` suffices their demand. Users only need to define the cutoff number of neurons. For example, in a neural network with 3 neurons oon input layer, and 6, 4, 6 neurons on three hidden layers respectively, if a user define 5 is the cutoff value, then the first and thrid hidden layers are considered to be oversized and will be drawn in a more concise fashion. Following is an example.
       
@@ -272,9 +272,9 @@ The output and resulting diagram are as follows.
 \end{figure} 
 ```
 
-![Example 3](man/figures/nn&#32;oversize.png)
+![Example 3](man/figures/oversize.png)
       
-> Neural Network Diagrams with Some Neurons being Covered up
+* Neural Network Diagrams with Some Neurons being Covered up
 
 In neural network analysis, users may hope to deemphasize some neurons and draw them with lighter color. In package `nndiagram`, they can do that simply by using command `nndiagram_nodeCoverup`. Users are expected to define the argument `node.coverup` properly. For example, in a neural network with 3 neurons oon input layer, and 4 neurons on each of the three hidden layers, if a user hopes to deemphasize the first neuron on both the first and second hidden layer, then he needs to define `node.coverup=c(4,8)`. The rule of neuron indexing is the same as that in command `nndiagram`.
 
@@ -367,9 +367,9 @@ The output and resulting diagram are as follows.
 \end{figure}       
 ```
 
-![Example 4](man/figures/nn&#32;nodecoverup.png)      
+![Example 4](man/figures/nodecoverup.png)      
 
-> Activation Function 
+* Activation Function 
 
 Activation functions are crucial in neural network analysis. Hence, in this version, command `activation_curve` is also added to help with the drawing of activation function in LaTeX. Users can either choose from ReLU, sigmoid and step functions, the three most popular activation functions, or define the expression on their own in argument `expr`. Following is an example of sigmoid function.
 
@@ -407,7 +407,7 @@ The output and resulting figure are as follows.
 \end{figure}       
 ```      
 
-<img src="man/figures/nn activation.png" alt="Example 5" width="600"/>    
+<img src="man/figures/activation.png" alt="Example 5" width="600"/>    
       
 </p>
 </details>
