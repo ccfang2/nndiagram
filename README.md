@@ -415,7 +415,6 @@ The output and resulting figure are as follows.
 ## Note
 - This package is an ongoing project, and more functions will be added in the future, such as those to produce pdf version of diagrams or convert handdrawing neural network diagrams to computerized ones. 
 - Collaborations are sincerely welcome. Comments and suggestions are always highly appreciated.
-- This package will be available on [CRAN](https://cran.r-project.org) soon.
 
 ## Contact
 
