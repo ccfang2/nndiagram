@@ -359,8 +359,8 @@ nndiagram_oversize <- function(input, hidden, size.cutoff=7, title=NULL, color="
             "\\end{figure} \n")
 
   # comment
-  comment <- c("% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, as shown below. \n",
-               "% Also, users need to define the length of \\layersep which is used in the LaTeX code. \n \n")
+  comment <- c("% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, including TikZ. \n",
+               "% Users are recommended to try the output LaTeX code in Overleaf. \n \n")
 
   cat(comment, setting, head, "\40 % drawing neurons \n",input_layer, hidden_layers, output_layer, dotted_lines,
       "\n \40 % drawing arrows \n",connections_input, connections_hidden, connections_output,

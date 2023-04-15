@@ -101,7 +101,8 @@ activation_curve <- function(expr="ReLU", title=NULL, xlabel=NULL, ylabel=NULL,
             "\\end{figure} \n"
             )
 
-  comment <- c("% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, as shown below. \n")
+  comment <- c("% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, including TikZ. \n",
+               "% Users are recommended to try the output LaTeX code in Overleaf. \n \n")
 
   cat(comment, setting, main, sep="")
 

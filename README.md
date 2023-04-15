@@ -2,7 +2,7 @@
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
 
-> This package helps to generate LaTeX code for drawing well-formatted neural network diagrams. Users have to define number of neurons on each layer, and optionally define neuron connections they would like to keep or omit, layers they consider to be oversized and neurons they would like to draw with lighter color, as well as title of diagram, color of lines, opacity of lines, labels of layers, input and output neurons. Also, this package helps to produce LaTeX code for drawing activation functions which are crucial in neural network analysis. To make the code work in a LaTeX editor, users need to install and import some TeX packages in the setting of TeX file.
+> Generates LaTeX code for drawing well-formatted neural network diagrams with TikZ. Users have to define number of neurons on each layer, and optionally define neuron connections they would like to keep or omit, layers they consider to be oversized and neurons they would like to draw with lighter color. They can also specify the title of diagram, color, opacity of figure, labels of layers, input and output neurons. In addition, this package helps to produce LaTeX code for drawing activation functions which are crucial in neural network analysis. To make the code work in a LaTeX editor, users need to install and import some TeX packages including TikZ in the setting of TeX file.
 
 ## Installation
 
@@ -23,8 +23,8 @@ nndiagram(input=3, hidden=c(4,4,4))
 The output is given as follows.
 
 ```latex
-% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, as shown below. 
-% Also, users need to define the length of \layersep which is used in the LaTeX code. 
+% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, including TikZ.
+% Users are recommended to try the output LaTeX code in Overleaf.
  
 \usepackage{tikz} 
 \usepackage{ifthen} 
@@ -113,8 +113,8 @@ nndiagram(input=3, hidden=c(4,4,4), omit=c("->4"))
 The output and resulting diagram are as follows.
 
 ```latex
-% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, as shown below. 
-% Also, users need to define the length of \layersep which is used in the LaTeX code. 
+% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, including TikZ.
+% Users are recommended to try the output LaTeX code in Overleaf.
  
 \usepackage{tikz} 
 \usepackage{ifthen} 
@@ -200,8 +200,8 @@ nndiagram_oversize(input=3, hidden=c(6,4,6), size.cutoff=5)
 The output and resulting diagram are as follows.
       
 ```latex
-% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, as shown below. 
-% Also, users need to define the length of \layersep which is used in the LaTeX code. 
+% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, including TikZ.
+% Users are recommended to try the output LaTeX code in Overleaf.
  
 \usepackage{tikz} 
 \def\layersep{2.5cm} 
@@ -285,8 +285,8 @@ nndiagram_nodeCoverup(input=3, hidden=c(4,4,4), node.coverup = c(4,8))
 The output and resulting diagram are as follows.
       
 ```latex
-% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, as shown below. 
-% Also, users need to define the length of \layersep which is used in the LaTeX code. 
+% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, including TikZ.
+% Users are recommended to try the output LaTeX code in Overleaf.
  
 \usepackage{tikz} 
 \def\layersep{2.5cm} 
@@ -380,7 +380,9 @@ activation_curve(expr="sigmoid", title="Sigmoid Function", xmin=-5, xmax=5)
 The output and resulting figure are as follows.
       
 ```latex
-% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, as shown below. 
+% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, including TikZ.
+% Users are recommended to try the output LaTeX code in Overleaf.
+
 \usepackage{tikz} 
 \usepackage{pgfplots} 
 \pgfplotsset{compat=1.18} 

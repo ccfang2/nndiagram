@@ -1,5 +1,7 @@
 test_that("activation_curve works", {
-  expect_equal(activation_curve(expr = "sigmoid"), c( "% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, as shown below. ",
+  expect_equal(activation_curve(expr = "sigmoid"), c( "% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, including TikZ. ",
+                                                      "% Users are recommended to try the output LaTeX code in Overleaf. ",
+                                                      " ",
                                                       "\\usepackage{tikz} ",
                                                       "\\usepackage{pgfplots} ",
                                                       "\\pgfplotsset{compat=1.18} ",

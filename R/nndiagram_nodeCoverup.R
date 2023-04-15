@@ -402,8 +402,8 @@ nndiagram_nodeCoverup <- function(input, hidden, node.coverup=NULL, title=NULL, 
             "\\end{figure} \n")
 
   # comment
-  comment <- c("% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, as shown below. \n",
-               "% Also, users need to define the length of \\layersep which is used in the LaTeX code. \n \n")
+  comment <- c("% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, including TikZ. \n",
+               "% Users are recommended to try the output LaTeX code in Overleaf. \n \n")
 
   cat(comment, setting, head, "\40 % drawing neurons \n",normal_input_layer,coverup_input_layer, normal_hidden_layers, coverup_hidden_layers,output_layer,
       "\40 % drawing arrows \n",normal_connections_input, coverup_connections_input,normal_connections_hidden,
