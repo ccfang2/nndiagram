@@ -5,7 +5,6 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/ccfang2/nndiagram?logo=GitHub)
 ![GitHub R package version](https://img.shields.io/github/r-package/v/ccfang2/nndiagram?logo=R)
 ![GitHub Repo stars](https://img.shields.io/github/stars/ccfang2/nndiagram?style=social)
-![Twitter Follow](https://img.shields.io/twitter/follow/ccfang819?logo=Twitter&style=social)
 
 
 
