@@ -1,6 +1,13 @@
 # nndiagram <img src="man/figures/badge.png" align="right" alt="" width="155" />
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
+![GitHub last commit](https://img.shields.io/github/last-commit/ccfang2/nndiagram?logo=GitHub)
+![GitHub repo size](https://img.shields.io/github/repo-size/ccfang2/nndiagram?logo=GitHub)
+![GitHub R package version](https://img.shields.io/github/r-package/v/ccfang2/nndiagram?logo=R)
+![GitHub Repo stars](https://img.shields.io/github/stars/ccfang2/nndiagram?style=social)
+![Twitter Follow](https://img.shields.io/twitter/follow/ccfang819?logo=Twitter&style=social)
+
+
 
 > Generates LaTeX code for drawing well-formatted neural network diagrams with TikZ. Users have to define number of neurons on each layer, and optionally define neuron connections they would like to keep or omit, layers they consider to be oversized and neurons they would like to draw with lighter color. They can also specify the title of diagram, color, opacity of figure, labels of layers, input and output neurons. In addition, this package helps to produce LaTeX code for drawing activation functions which are crucial in neural network analysis. To make the code work in a LaTeX editor, users need to install and import some TeX packages including TikZ in the setting of TeX file.
 
