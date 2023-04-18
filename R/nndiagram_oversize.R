@@ -1,6 +1,6 @@
-#' Producing LaTeX Code for Drawing Over-sized Neural Network Diagrams
-#' @description The \code{nndiagram_oversize} command is used to produce LaTeX code for drawing well-formatted neural network diagrams, some layers of which have excess neurons that users hope to leave out. To make the code work in a LaTeX editor, users need
-#' to install and import the TeX package \href{https://www.overleaf.com/learn/latex/TikZ_package}{TikZ} in the setting of TeX file. Syntax of importing this package is included in the output of function.
+#' Producing 'LaTeX' Code for Drawing Over-sized Neural Network Diagrams
+#' @description The \code{nndiagram_oversize} command is used to produce 'LaTeX' code for drawing well-formatted neural network diagrams, some layers of which have excess neurons that users hope to leave out. To make the code work in a 'LaTeX' editor, users need
+#' to install and import the 'TeX' package \href{https://www.overleaf.com/learn/latex/TikZ_package}{TikZ} in the setting of 'TeX' file. Syntax of importing this package is included in the output of function.
 #'
 #' @param input a positive integer that specifies the number of input neurons.
 #' @param hidden a positive integer vector that specifies the number of neurons on each hidden layer. For example, c(6,6,6) specifies that there are 3 hidden layers and 6 neurons on each hidden layer. Non-positive and non-integer numbers are not allowed.
@@ -13,9 +13,11 @@
 #' @param layer.label an optional character vector that specifies label for each layer, including input, hidden and output layers.
 #' @param input.label an optional character vector that specifies label for each input neuron.
 #' @param output.label an optional character that specifies label for output neuron.
+#' @param suppress an optional logical value that specifies whether \code{nndiagram_oversize} should suppress the output of 'LaTeX' code to be directly printed on console. Default is \code{FALSE}.
 #'
-#' @return \code{nndiagram_oversize} uses \code{cat()} to produce LaTeX code for neural network diagram. Also, \code{nndiagram_oversize} saves the same output as a character vector invisibly, so users could use \code{cat()} to print it out later, as shown in Examples.
-#' The \code{nndiagram_oversize} LaTeX output can be directly copied and pasted to produce neural network diagram in any LaTeX editor.
+#' @return \code{nndiagram_oversize} uses \code{cat()} to print out 'LaTeX' code on console, if not suppressed. Also, \code{nndiagram_oversize} saves the same output as a character vector invisibly, so users could use \code{cat()} to print it out later at their demand, as shown in Examples.
+#' The \code{nndiagram_oversize} 'LaTeX' output can be directly copied and pasted to produce neural network diagram in any 'LaTeX' editor.
+#' @seealso \link{nndiagram}; \link{nndiagram_nodeCoverup}; \link{activation_curve}.
 #' @export
 #'
 #' @note This package is an ongoing project, and more functions will be added in the future, such as those to produce pdf version of diagrams or convert handdrawing neural network diagrams to computerized ones. Collaborations are sincerely welcome.
@@ -35,35 +37,36 @@
 #' # Same as the second example but labels of input neurons are designed to be letters from a to c.
 #' nndiagram_oversize(input=3, hidden=c(6,6,6), size.cutoff=5, input.label=letters[1:3])
 #'
-#' # Save the output and use the saved output to produce LaTeX code.
-#' nnd_oversize <- nndiagram_oversize(input=3, hidden=c(6,6,6), size.cutoff=5)
+#' # Suppress the output of 'LaTeX' code to be directly printed on the console and save the output
+#' # to an object, which can be printed later at demand.
+#' nnd_oversize <- nndiagram_oversize(input=3, hidden=c(6,6,6), size.cutoff=5, suppress=TRUE)
 #' cat(paste(nnd_oversize,"\n"))
 nndiagram_oversize <- function(input, hidden, size.cutoff=7, title=NULL, color="black",alpha=1,
-                               layer.sep = 2.5, layer.label=NULL, input.label=NULL, output.label=NULL) {
+                               layer.sep = 2.5, layer.label=NULL, input.label=NULL, output.label=NULL, suppress=FALSE) {
 
   #---------------------------------------
   # Checking arguments and data preparation
   #---------------------------------------
 
   # checking if input is a positive single integer
-  if (!is.numeric(input) | input <=0 | (input != floor(input))) stop("input should be a positive integer")
-  if (length(input)>1) stop("input should be a single number")
+  if (!is.numeric(input) | input <=0 | (input != floor(input))) stop("'input' should be a positive integer")
+  if (length(input)>1) stop("'input' should be a single number")
 
   # checking if elements in hidden are positive integers
-  if (!is.numeric(hidden) | any(hidden <= 0)) stop("Elements in hidden should be positive numbers")
-  if (any(hidden != floor(hidden))) stop("Elements in hidden should be integers")
+  if (!is.numeric(hidden) | any(hidden <= 0)) stop("Elements in 'hidden' should be positive numbers")
+  if (any(hidden != floor(hidden))) stop("Elements in 'hidden' should be integers")
 
   # checking if out-off size is a positive integer no less than 5
-  if (size.cutoff<5 | !is.numeric(size.cutoff) | (size.cutoff != floor(size.cutoff))) stop("size.cutoff should be a positive integer no less than 5")
-  if (length(size.cutoff)>1) stop("size.cutoff should be a single number")
+  if (size.cutoff<5 | !is.numeric(size.cutoff) | (size.cutoff != floor(size.cutoff))) stop("'size.cutoff' should be a positive integer no less than 5")
+  if (length(size.cutoff)>1) stop("'size.cutoff' should be a single number")
 
   # checking if alpha is between 0 and 1
-  if (alpha<0 | alpha>1 | !is.numeric(alpha)) stop("alpha should be a number between 0 and 1")
-  if (length(alpha)>1) stop("alpha should be a single number")
+  if (alpha<0 | alpha>1 | !is.numeric(alpha)) stop("'alpha' should be a number between 0 and 1")
+  if (length(alpha)>1) stop("'alpha' should be a single number")
 
   # checking if layer.sep is a positive single number
-  if (layer.sep<=0 | !is.numeric(layer.sep)) stop("layer.sep should be a positive number")
-  if (length(layer.sep)>1) stop("layer.sep should be a single number")
+  if (layer.sep<=0 | !is.numeric(layer.sep)) stop("'layer.sep' should be a positive number")
+  if (length(layer.sep)>1) stop("'layer.sep' should be a single number")
 
   # checking if layer.label is defined correctly
   if (is.null(layer.label))
@@ -82,6 +85,10 @@ nndiagram_oversize <- function(input, hidden, size.cutoff=7, title=NULL, color="
       if (!is.null(output.label) & length(output.label)!= 1)
         stop("There are more than 1 output labels")
     }
+
+  # checking if suppress is defined correctly
+  if (!is.logical(suppress)) stop("'suppress' should be a logical value.")
+  if (length(suppress) > 1) stop("'suppress' should be a single logical value.")
 
   # selecting layers which are oversized and compressing oversized layers
   layers_original <- c(input, hidden)
@@ -359,12 +366,15 @@ nndiagram_oversize <- function(input, hidden, size.cutoff=7, title=NULL, color="
             "\\end{figure} \n")
 
   # comment
-  comment <- c("% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, including TikZ. \n",
-               "% Users are recommended to try the output LaTeX code in Overleaf. \n \n")
+  comment <- c("% To make the code work in any 'LaTeX' editor, users need to install and import two 'TeX' packages in the setting, including 'TikZ'. \n",
+               "% Users are recommended to try the output 'LaTeX' code in Overleaf. \n \n")
 
-  cat(comment, setting, head, "\40 % drawing neurons \n",input_layer, hidden_layers, output_layer, dotted_lines,
-      "\n \40 % drawing arrows \n",connections_input, connections_hidden, connections_output,
-      "\40 % annotations \n",annotation, tail, sep="")
+  # discussing whether to suppress the output or not
+  if (suppress==FALSE) {
+    cat(comment, setting, head, "\40 % drawing neurons \n",input_layer, hidden_layers, output_layer, dotted_lines,
+        "\n \40 % drawing arrows \n",connections_input, connections_hidden, connections_output,
+        "\40 % annotations \n",annotation, tail, sep="")
+  } else message("The output of 'LaTeX' code is designed in your command to be suppressed, but it is saved in the object, if assigned. See Examples to find out how to print out the saved output.")
 
   syntax <- utils::capture.output(cat(comment, setting, head, "\40 % drawing neurons \n",input_layer, hidden_layers, output_layer,dotted_lines,
                                       "\n \40 % drawing arrows \n",connections_input, connections_hidden, connections_output,
