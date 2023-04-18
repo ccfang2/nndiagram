@@ -18,6 +18,12 @@ You can install the development version of nndiagram from [GitHub](https://githu
 devtools::install_github("ccfang2/nndiagram")
 ```
 
+Or, you can download it directly from [CRAN](https://cran.r-project.org) with:
+
+```r
+install.packages("nndiagram")
+```
+
 ## Example 1
 
 ```r
