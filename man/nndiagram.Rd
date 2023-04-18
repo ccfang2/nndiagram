@@ -2,7 +2,7 @@
 % Please edit documentation in R/nndiagram.R
 \name{nndiagram}
 \alias{nndiagram}
-\title{Producing LaTeX Code for Drawing Neural Network Diagrams}
+\title{Producing 'LaTeX' Code for Drawing Neural Network Diagrams}
 \usage{
 nndiagram(
   input,
@@ -15,7 +15,8 @@ nndiagram(
   layer.sep = 2.5,
   layer.label = NULL,
   input.label = NULL,
-  output.label = NULL
+  output.label = NULL,
+  suppress = FALSE
 )
 }
 \arguments{
@@ -43,16 +44,18 @@ and 'omit' simultaneously. Default is \code{NULL}.}
 \item{input.label}{an optional character vector that specifies label for each input neuron.}
 
 \item{output.label}{an optional character that specifies label for output neuron.}
+
+\item{suppress}{an optional logical value that specifies whether \code{nndiagram} should suppress the output of 'LaTeX' code to be directly printed on console. Default is \code{FALSE}.}
 }
 \value{
-\code{nndiagram} uses \code{cat()} to produce LaTeX code for neural network diagram. Also, \code{nndiagram} saves the same output as a character vector invisibly, so users could use \code{cat()} to print it out later, as shown in Examples.
-The \code{nndiagram} LaTeX output can be directly copied and pasted to produce neural network diagram in any LaTeX editor.
+\code{nndiagram} uses \code{cat()} to print out 'LaTeX' code on console, if not suppressed. Also, \code{nndiagram} saves the same output as a character vector invisibly, so users could use \code{cat()} to print it out later at their demand, as shown in Examples.
+The \code{nndiagram} 'LaTeX' output can be directly copied and pasted to produce neural network diagram in any 'LaTeX' editor.
 }
 \description{
-The \code{nndiagram} command is used to produce LaTeX code for drawing well-formatted neural network diagrams. To make the code work in a LaTeX editor, users need
-to install and import two TeX packages, i.e., \href{https://www.overleaf.com/learn/latex/TikZ_package}{TikZ} and
+The \code{nndiagram} command is used to produce 'LaTeX' code for drawing well-formatted neural network diagrams. To make the code work in a 'LaTeX' editor, users need
+to install and import two 'TeX' packages, i.e., \href{https://www.overleaf.com/learn/latex/TikZ_package}{TikZ} and
 \href{https://www.ctan.org/pkg/ifthen#:~:text=Ifthen\%20is\%20a\%20separate\%20package\%20within\%20the\%20LaT.,always\%20needed\%20to\%20load\%20it.\%20Sources.\%20\%2Fmacros\%2Flatex\%2Fbase.\%20Documentation.}{ifthen}
-in the setting of TeX file. Syntax of importing these packages is included in the output of function.
+in the setting of 'TeX' file. Syntax of importing these packages is included in the output of function.
 }
 \note{
 This package is an ongoing project, and more functions will be added in the future, such as those to produce pdf version of diagrams or convert handdrawing neural network diagrams to computerized ones. Collaborations
@@ -72,9 +75,13 @@ nndiagram(input=3, hidden=c(4,4,4), omit=c("->4"))
 # Same as the first example but connections with neuron 5 as source are omitted.
 nndiagram(input=3, hidden=c(4,4,4), omit=c("5->"))
 
-# Save the output and use the saved output to produce LaTeX code.
-nnd <- nndiagram(input=3, hidden=c(4,4,4))
+# Suppress the output of 'LaTeX' code to be directly printed on the console and save the output
+# to an object, which can be printed later at demand.
+nnd <- nndiagram(input=3, hidden=c(4,4,4), suppress=TRUE)
 cat(paste(nnd,"\n"))
+}
+\seealso{
+\link{nndiagram_oversize}; \link{nndiagram_nodeCoverup}; \link{activation_curve}.
 }
 \author{
 Chencheng Fang, Bonn Graduate School of Economics, University of Bonn. Email: \email{ccfang@uni-bonn.de}

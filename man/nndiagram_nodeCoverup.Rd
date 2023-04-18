@@ -2,7 +2,7 @@
 % Please edit documentation in R/nndiagram_nodeCoverup.R
 \name{nndiagram_nodeCoverup}
 \alias{nndiagram_nodeCoverup}
-\title{Producing LaTeX Code for Drawing Neural Network Diagrams with Some Neurons being Covered-up}
+\title{Producing 'LaTeX' Code for Drawing Neural Network Diagrams with Some Neurons being Covered-up}
 \usage{
 nndiagram_nodeCoverup(
   input,
@@ -14,7 +14,8 @@ nndiagram_nodeCoverup(
   layer.sep = 2.5,
   layer.label = NULL,
   input.label = NULL,
-  output.label = NULL
+  output.label = NULL,
+  suppress = FALSE
 )
 }
 \arguments{
@@ -38,14 +39,16 @@ and \code{hidden=c(6,6,6)}, \code{node.coverup=c(4,10)} means that the user need
 \item{input.label}{an optional character vector that specifies label for each input neuron.}
 
 \item{output.label}{an optional character that specifies label for output neuron.}
+
+\item{suppress}{an optional logical value that specifies whether \code{nndiagram_nodeCoverup} should suppress the output of 'LaTeX' code to be directly printed on console. Default is \code{FALSE}.}
 }
 \value{
-\code{nndiagram_nodeCoverup} uses \code{cat()} to produce LaTeX code for neural network diagram. Also, \code{nndiagram_nodeCoverup} saves the same output as a character vector invisibly, so users could use \code{cat()} to print it out later, as shown in Examples.
-The \code{nndiagram_nodeCoverup} LaTeX output can be directly copied and pasted to produce neural network diagram in any LaTeX editor.
+\code{nndiagram_nodeCoverup} uses \code{cat()} to print out 'LaTeX' code on console, if not suppressed. Also, \code{nndiagram_nodeCoverup} saves the same output as a character vector invisibly, so users could use \code{cat()} to print it out later at their demand, as shown in Examples.
+The \code{nndiagram_nodeCoverup} 'LaTeX' output can be directly copied and pasted to produce neural network diagram in any 'LaTeX' editor.
 }
 \description{
-The \code{nndiagram_nodeCoverup} command is used to produce LaTeX code for drawing well-formatted neural network diagrams, some neurons of which users hope to cover up with lighter color.
-To make the code work in a LaTeX editor, users need to install and import the TeX package \href{https://www.overleaf.com/learn/latex/TikZ_package}{TikZ} in the setting of TeX file. Syntax of importing this package is included in the output of function.
+The \code{nndiagram_nodeCoverup} command is used to produce 'LaTeX' code for drawing well-formatted neural network diagrams, some neurons of which users hope to cover up with lighter color.
+To make the code work in a 'LaTeX' editor, users need to install and import the 'TeX' package \href{https://www.overleaf.com/learn/latex/TikZ_package}{TikZ} in the setting of 'TeX' file. Syntax of importing this package is included in the output of function.
 }
 \note{
 This package is an ongoing project, and more functions will be added in the future, such as those to produce pdf version of diagrams or convert handdrawing neural network diagrams to computerized ones. Collaborations are sincerely welcome.
@@ -64,9 +67,13 @@ nndiagram_nodeCoverup(input=3, hidden=c(6,6,6), node.coverup=c(4,10))
 # Same as the first example but distance between layers is defined to be smaller.
 nndiagram_nodeCoverup(input=3, hidden=c(6,6,6), layer.sep=1.5)
 
-# Save the output and use the saved output to produce LaTeX code
-nnd_nodeCoverup <- nndiagram_nodeCoverup(input=3, hidden=c(6,6,6))
+# Suppress the output of 'LaTeX' code to be directly printed on the console and save the output
+# to an object, which can be printed later at demand.
+nnd_nodeCoverup <- nndiagram_nodeCoverup(input=3, hidden=c(6,6,6), suppress=TRUE)
 cat(paste(nnd_nodeCoverup,"\n"))
+}
+\seealso{
+\link{nndiagram}; \link{nndiagram_oversize}; \link{activation_curve}.
 }
 \author{
 Chencheng Fang, Bonn Graduate School of Economics, University of Bonn. Email: \email{ccfang@uni-bonn.de}

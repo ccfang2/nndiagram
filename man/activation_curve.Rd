@@ -2,7 +2,7 @@
 % Please edit documentation in R/activation_curve.R
 \name{activation_curve}
 \alias{activation_curve}
-\title{Producing LaTeX Code for Drawing Activation Functions}
+\title{Producing 'LaTeX' Code for Drawing Activation Functions}
 \usage{
 activation_curve(
   expr = "ReLU",
@@ -12,7 +12,8 @@ activation_curve(
   xmin = -10,
   xmax = 10,
   ymin = NULL,
-  ymax = NULL
+  ymax = NULL,
+  suppress = FALSE
 )
 }
 \arguments{
@@ -32,14 +33,16 @@ Or, it can be a \link[base]{call} or an \link[base]{expression} written as a fun
 \item{ymin}{an optional numeric value that specifies the minimum value of y-axis. Default is \code{NULL}.}
 
 \item{ymax}{an optional numeric value that specifies the maximum value of y-axis. Default is \code{NULL}.}
+
+\item{suppress}{an optional logical value that specifies whether \code{activation_curve} should suppress the output of 'LaTeX' code to be directly printed on console. Default is \code{FALSE}.}
 }
 \value{
-\code{activation_curve} uses \code{cat()} to produce LaTeX code for drawing activation functions. Also, \code{activation_curve} saves the same output as a character vector invisibly, so users could use \code{cat()} to print it out later, as shown in Examples.
-The \code{activation_curve} LaTeX output can be directly copied and pasted to produce activation curve in any LaTeX editor.
+\code{activation_curve} uses \code{cat()} to print out 'LaTeX' code on console, if not suppressed. Also, \code{activation_curve} saves the same output as a character vector invisibly, so users could use \code{cat()} to print it out later at their demand, as shown in Examples.
+The \code{activation_curve} 'LaTeX' output can be directly copied and pasted to produce activation curve in any 'LaTeX' editor.
 }
 \description{
-The \code{activation_curve} command is used to produce LaTeX code for drawing well-formatted activation functions, which are crucial in neural network analysis.
-To make the code work in a LaTeX editor, users need to install and import two TeX packages \href{https://www.overleaf.com/learn/latex/TikZ_package}{TikZ} and \href{https://ctan.org/pkg/pgfplots}{pgfplots} in the setting of TeX file.
+The \code{activation_curve} command is used to produce 'LaTeX' code for drawing well-formatted activation functions, which are crucial in neural network analysis.
+To make the code work in a 'LaTeX' editor, users need to install and import two 'TeX' packages \href{https://www.overleaf.com/learn/latex/TikZ_package}{TikZ} and \href{https://ctan.org/pkg/pgfplots}{pgfplots} in the setting of 'TeX' file.
 Syntax of importing these packages is included in the output of function.
 }
 \examples{
@@ -52,9 +55,13 @@ activation_curve(expr="sigmoid", title="Sigmoid Function", xmin=-5, xmax=5)
 # Define a parametric ReLU in the argument of \code{expr}.
 activation_curve(expr="(x>=0)*x+0.2*x*(x<0)", title="Parametric Rectified Linear Unit Function")
 
-# Save the output and use the saved output to produce LaTeX code.
-nnd_activation <- activation_curve()
+# Suppress the output of 'LaTeX' code to be directly printed on the console and save the output
+# to an object, which can be printed later at demand.
+nnd_activation <- activation_curve(suppress=TRUE)
 cat(paste(nnd_activation,"\n"))
+}
+\seealso{
+\link{nndiagram}; \link{nndiagram_oversize}; \link{nndiagram_nodeCoverup}.
 }
 \author{
 Chencheng Fang, Bonn Graduate School of Economics, University of Bonn. Email: \email{ccfang@uni-bonn.de}
