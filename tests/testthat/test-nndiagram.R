@@ -1,6 +1,6 @@
 test_that("nndiagram works", {
-  expect_equal(nndiagram(input=3,hidden = c(3,3)), c("% To make the code work in any LaTeX editor, users need to install and import two TeX packages in the setting, including TikZ. ",
-                                                     "% Users are recommended to try the output LaTeX code in Overleaf. ",
+  expect_equal(nndiagram(input=3,hidden = c(3,3)), c("% To make the code work in any 'LaTeX' editor, users need to install and import two 'TeX' packages in the setting, including 'TikZ'. ",
+                                                     "% Users are recommended to try the output 'LaTeX' code in Overleaf. ",
                                                      " ",
                                                      "\\usepackage{tikz} ",
                                                      "\\usepackage{ifthen} ",
